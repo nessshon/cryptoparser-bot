@@ -104,6 +104,7 @@ class Token(Base):
             query = await session.execute(
                 select(Token).
                 where(Token.is_viewed.is_(False)).
-                order_by(Token.created_at.desc())
+                order_by(Token.created_at.desc()).
+                limit(50)
             )
             return [i[0] for i in query.all()]
