@@ -1,0 +1,38 @@
+import asyncio
+from contextlib import suppress
+
+from aiogram import Bot
+from aiogram.utils.markdown import hitalic
+
+from app.bot import keyboards
+from app.bot.misc.createtexts import create_base_info_token_text
+from app.db.sqlite.manage import Database
+from app.translator import translate
+
+
+async def start_posts(token_id: str | int, channels_ids: list, ) -> None:
+    bot = Bot.get_current()
+    db: Database = bot.get("db")
+    token = await db.token.get(id_=token_id)
+
+    for channel_id in channels_ids:
+        channel = await db.channel.get(id_=channel_id)
+
+        markup = keyboards.post_buttons(token.id, token.chain)
+        text = create_base_info_token_text(token)
+
+        try:
+            if token.comment:
+                if channel.language_code != "ru":
+                    comment = await translate(token.comment, 'ru', channel.language_code)
+                else:
+                    comment = token.comment
+                if comment:
+                    text += f"\n\n{hitalic(comment)}"
+
+        except (Exception,):
+            pass
+        text += "\n\n<b>Scan result:</b>\n"
+        with suppress(Exception):
+            await bot.send_message(channel_id, text, reply_markup=markup)
+        await asyncio.sleep(1)
