@@ -75,7 +75,8 @@ def get_social_links(address: str) -> dict:
                 key = 'Instagram'
             if "youtube.com" in value:
                 key = 'Youtube'
-
+            if "linkedin.com" in value:
+                key = 'LinkedIn'
             data[key] = value
 
         return data
