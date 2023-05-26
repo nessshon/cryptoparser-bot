@@ -71,12 +71,14 @@ def get_social_links(address: str) -> dict:
                 key, value = link_type.capitalize(), element.get_attribute('href')
             except NoSuchElementException:
                 key, value = element.text, element.get_attribute('href')
-            if "instagram.com" in value:
+            if "instagram.com" in value.lower():
                 key = 'Instagram'
-            if "youtube.com" in value:
+            if "youtube.com" in value.lower():
                 key = 'Youtube'
-            if "linkedin.com" in value:
+            if "linkedin.com" in value.lower():
                 key = 'LinkedIn'
+            if "tiktok.com" in value.lower():
+                key = 'TikTok'
             data[key] = value
 
         return data
