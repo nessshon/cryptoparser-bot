@@ -184,9 +184,6 @@ def admin_menu(admins: list[User]) -> InlineKeyboardMarkup:
 def added_channels(channels: list[Channel]) -> InlineKeyboardMarkup:
     markup = InlineKeyboardMarkup(row_width=2)
 
-    markup.row(
-        InlineKeyboardButton(text='≣ Выбрать все', callback_data=CallbackData.ALL)
-    )
     markup.add(
         *[
             InlineKeyboardButton(text=channel.title, callback_data=str(channel.id))
@@ -200,7 +197,11 @@ def added_channels(channels: list[Channel]) -> InlineKeyboardMarkup:
 
 
 def choose_channels(channels: list[Channel], selected: list) -> InlineKeyboardMarkup:
-    markup = InlineKeyboardMarkup(row_width=1)
+    markup = InlineKeyboardMarkup(row_width=2)
+
+    markup.row(
+        InlineKeyboardButton(text='≣ Выбрать все', callback_data=CallbackData.ALL)
+    )
     markup.add(
         *[
             InlineKeyboardButton(
