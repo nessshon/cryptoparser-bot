@@ -69,6 +69,14 @@ class TokenCallback:
                 else:
                     text = "Нужно выбрать минимум 1 канал!"
                     await call.answer(text, show_alert=True)
+            case CallbackData.ALL:
+                if len(selected) == len(channels_ids):
+                    selected.clear()
+                else:
+                    selected = channels_ids
+                await state.update_data(selected=selected)
+                await TokenWindow.choose_channel(state, call=call)
+
             case channel_id if int(channel_id) in channels_ids:
                 if int(channel_id) in selected:
                     selected.remove(int(channel_id))

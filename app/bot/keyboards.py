@@ -7,6 +7,7 @@ from app.translator import SUPPORT_LANGUAGES
 
 class CallbackData:
     ADD = 'add'
+    ALL = 'all'
     SKIP = 'skip'
     BACK = 'back'
     NEXT = 'next'
@@ -33,18 +34,18 @@ def post_buttons(token_id: str, chain: str) -> InlineKeyboardMarkup:
     from parser.coingecko.new_cryptocurrencies import Token
 
     if chain == Token.ChainType.Ethereum:
-        explorer_text = "etherscan"
+        explorer_text = "Etherscan"
         explorer_url = f"https://etherscan.io/token/{token_id}"
         swap_url = f"https://pancakeswap.finance/swap?chain=eth&outputCurrency={token_id}"
     else:
-        explorer_text = "bscscan"
+        explorer_text = "BSCscan"
         explorer_url = f"https://bscscan.com/token/{token_id}"
         swap_url = f"https://pancakeswap.finance/swap?chain=bsc&outputCurrency={token_id}"
 
     return InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(text="pancakeswap", url=swap_url),
+                InlineKeyboardButton(text="PancakeSwap", url=swap_url),
                 InlineKeyboardButton(text=explorer_text, url=explorer_url)
             ]
         ]
@@ -181,15 +182,18 @@ def admin_menu(admins: list[User]) -> InlineKeyboardMarkup:
 
 
 def added_channels(channels: list[Channel]) -> InlineKeyboardMarkup:
-    markup = InlineKeyboardMarkup(row_width=1)
+    markup = InlineKeyboardMarkup(row_width=2)
 
+    markup.row(
+        InlineKeyboardButton(text='≣ Выбрать все', callback_data=CallbackData.ALL)
+    )
     markup.add(
         *[
             InlineKeyboardButton(text=channel.title, callback_data=str(channel.id))
             for channel in channels
         ]
     )
-    markup.add(
+    markup.row(
         InlineKeyboardButton(text='‹ Назад', callback_data=CallbackData.BACK)
     )
     return markup
