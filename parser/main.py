@@ -59,6 +59,8 @@ async def parse(db: Database, bot: Bot, config: Config) -> None:
                 for admin_id in [config.ADMIN_ID, config.DEV_ID] + db_admins:
                     await send_message(bot, db_token, admin_id)
 
+    logging.info("Parsing finished!")
+
 
 async def send_message(bot: Bot, db_token: Token, chat_id: str | int) -> None:
     text = hide_link(db_token.screenshot_link)

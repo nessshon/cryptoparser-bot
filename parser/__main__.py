@@ -33,9 +33,9 @@ async def main():
             await asyncio.sleep(600)
             continue
         logging.info("Parsing...")
-        await parse(db, bot, config)
-        logging.info("Parsing finished!")
-        await asyncio.sleep(random.randint(2000, 3000))
+        asyncio.create_task(parse(db, bot, config))
+        logging.info("Parsing added to the task...")
+        await asyncio.sleep(random.randint(2400, 3600))
 
 
 if __name__ == '__main__':
