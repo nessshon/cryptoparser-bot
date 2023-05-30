@@ -29,10 +29,33 @@ async def start_posts(token_id: str | int, channels_ids: list, ) -> None:
                     comment = token.comment
                 if comment:
                     text += f"\n\n{hitalic(comment)}"
-
         except (Exception,):
             pass
         text += "\n\n<b>Scan result:</b>\n"
+
         with suppress(Exception):
+            await bot.send_message(channel_id, text, reply_markup=markup)
+        await asyncio.sleep(1)
+
+
+async def send_posts(channels_ids: list, text: str, photo: str = None, buttons: str = None) -> None:
+    bot: Bot = Bot.get_current()
+    db: Database = bot.get("db")
+
+    for channel_id in channels_ids:
+        channel = await db.channel.get(id_=channel_id)
+
+        try:
+            if channel.language_code != "ru":
+                text = await translate(text, 'ru', channel.language_code)
+            else:
+                text = text
+        except (Exception,):
+            pass
+        markup = keyboards.generate_buttons(buttons) if buttons else None
+
+        if photo:
+            await bot.send_photo(channel_id, photo, caption=text, reply_markup=markup)
+        else:
             await bot.send_message(channel_id, text, reply_markup=markup)
         await asyncio.sleep(1)

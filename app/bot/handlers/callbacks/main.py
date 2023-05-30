@@ -6,6 +6,7 @@ from aiogram.types import CallbackQuery
 
 from app.bot.handlers.windows.admin import AdminWindow
 from app.bot.handlers.windows.channel import ChannelWindow
+from app.bot.handlers.windows.create_post import CreatePostWindow
 from app.bot.handlers.windows.post import PostWindow
 from app.bot.handlers.windows.token import TokenWindow
 from app.bot.keyboards import CallbackData
@@ -43,6 +44,8 @@ class MainCallback:
     @staticmethod
     async def menu_handler(call: CallbackQuery, state: FSMContext) -> None:
         match call.data:
+            case CallbackData.CREATE_POST:
+                await CreatePostWindow.send_message(state, call=call)
             case CallbackData.ADMINS:
                 await AdminWindow.menu(state, call=call)
             case CallbackData.CHANNELS:

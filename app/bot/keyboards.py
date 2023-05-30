@@ -29,6 +29,19 @@ class CallbackData:
     EDIT_TIME = 'edit_time'
     EDIT_COMMENT = 'edit_comment'
 
+    CREATE_POST = 'create_post'
+
+
+def generate_buttons(buttons: str) -> InlineKeyboardMarkup:
+    return InlineKeyboardMarkup(
+        inline_keyboard=[
+            [InlineKeyboardButton(
+                text=text.split("|")[0], url=text.split("|")[1].replace(" ", "")
+            ) for text in row]
+            for row in [i.split(",") for i in buttons.split("\n")]
+        ] if buttons else None
+    )
+
 
 def post_buttons(token_id: str, chain: str) -> InlineKeyboardMarkup:
     from parser.coingecko.new_cryptocurrencies import Token
@@ -236,6 +249,9 @@ def support_languages() -> InlineKeyboardMarkup:
 def main_menu(config: Config, user_id: int | str) -> InlineKeyboardMarkup:
     markup = InlineKeyboardMarkup(row_width=2)
 
+    markup.row(
+        InlineKeyboardButton(text="✉️ Создать пост", callback_data=CallbackData.CREATE_POST),
+    )
     markup.add(
         InlineKeyboardButton(text="🪙 Токены", callback_data=CallbackData.TOKENS),
         InlineKeyboardButton(text="🕝 Отложено", callback_data=CallbackData.PENDING),

@@ -46,3 +46,10 @@ class PostMenuState(StatesGroup):
     edit_comment = State()
     edit_comment_confirm = State()
     del_post_confirm = State()
+
+
+class CreatePostState(StatesGroup):
+    send_message = State()
+    send_buttons = State()
+    choose_channel = State()
+    send_confirm = State()

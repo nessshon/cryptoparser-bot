@@ -155,3 +155,22 @@ def register(dp: Dispatcher) -> None:
         PostCallback.del_post_confirm_handler, IsPrivate(), IsAdmin(),
         state=PostMenuState.del_post_confirm,
     )
+
+    from app.bot.states import CreatePostState
+    from app.bot.handlers.callbacks.create_post import CreatePostCallback
+    dp.register_callback_query_handler(
+        CreatePostCallback.send_message_handler, IsPrivate(), IsAdmin(),
+        state=CreatePostState.send_message,
+    )
+    dp.register_callback_query_handler(
+        CreatePostCallback.send_buttons_handler, IsPrivate(), IsAdmin(),
+        state=CreatePostState.send_buttons,
+    )
+    dp.register_callback_query_handler(
+        CreatePostCallback.choose_channel_handler, IsPrivate(), IsAdmin(),
+        state=CreatePostState.choose_channel,
+    )
+    dp.register_callback_query_handler(
+        CreatePostCallback.send_confirm_handler, IsPrivate(), IsAdmin(),
+        state=CreatePostState.send_confirm,
+    )

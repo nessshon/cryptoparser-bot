@@ -87,7 +87,8 @@ def get_new_tokens() -> list[Token]:
             new_tokens = tokens
         else:
             for token in tokens:
-                if token.chains[0].contract_address == last_token: break  # noqa:E701
+                if token.chains[0].contract_address == last_token:
+                    break
                 new_tokens.append(token)
     except (Exception,):
         pass

@@ -43,3 +43,14 @@ def register(dp: Dispatcher) -> None:
         PostMessage.edit_comment_handler, IsAdmin(), IsPrivate(),
         state=PostMenuState.edit_comment, content_types="any",
     )
+
+    from app.bot.states import CreatePostState
+    from app.bot.handlers.messages.create_post import CreatePostMessage
+    dp.register_message_handler(
+        CreatePostMessage.send_message_handler, IsAdmin(), IsPrivate(),
+        state=CreatePostState.send_message, content_types="any",
+    )
+    dp.register_message_handler(
+        CreatePostMessage.send_buttons_handler, IsAdmin(), IsPrivate(),
+        state=CreatePostState.send_buttons, content_types="any",
+    )
