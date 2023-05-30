@@ -83,13 +83,13 @@ def get_new_tokens() -> list[Token]:
         tokens = get_new_cryptocurrencies()
 
         if last_token is None:
-            LastToken().update(tokens[0].chains[0].contract_address)
             new_tokens = tokens
         else:
             for token in tokens:
                 if token.chains[0].contract_address == last_token:
                     break
                 new_tokens.append(token)
+        LastToken().update(tokens[0].chains[0].contract_address)
     except (Exception,):
         pass
 
