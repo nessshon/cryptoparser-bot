@@ -11,6 +11,7 @@ Functions:
 - get_new_cryptocurrencies: retrieves a list of new cryptocurrencies from the CoinGecko website
                             using Selenium webdriver. It returns a list of Token objects.
 """
+import logging
 from dataclasses import dataclass
 
 from selenium.common import NoSuchElementException
@@ -90,8 +91,8 @@ def get_new_tokens() -> list[Token]:
                     break
                 new_tokens.append(token)
         LastToken().update(tokens[0].chains[0].contract_address)
-    except (Exception,):
-        pass
+    except Exception as err:
+        logging.error(err)
 
     return new_tokens
 
