@@ -47,15 +47,18 @@ async def send_posts(channels_ids: list, text: str, photo: str = None, buttons: 
 
         try:
             if channel.language_code != "ru":
-                text = await translate(text, 'ru', channel.language_code)
+                translated_text = await translate(text, 'ru', channel.language_code)
             else:
-                text = text
-        except (Exception,):
-            pass
-        markup = keyboards.generate_buttons(buttons) if buttons else None
+                translated_text = text
+            markup = keyboards.generate_buttons(buttons) if buttons else None
 
-        if photo:
-            await bot.send_photo(channel_id, photo, caption=text, reply_markup=markup)
-        else:
-            await bot.send_message(channel_id, text, reply_markup=markup)
-        await asyncio.sleep(1)
+            if photo:
+                await bot.send_photo(channel_id, photo, caption=translated_text, reply_markup=markup)
+            else:
+                await bot.send_message(channel_id, translated_text, reply_markup=markup)
+
+        except (Exception,):
+            ...
+
+        finally:
+            await asyncio.sleep(1)
