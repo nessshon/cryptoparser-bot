@@ -91,6 +91,7 @@ def get_new_tokens() -> list[Token]:
                     break
                 new_tokens.append(token)
         LastToken().update(tokens[0].chains[0].contract_address)
+
     except Exception as err:
         logging.error(err)
 
@@ -154,6 +155,9 @@ def get_new_cryptocurrencies() -> list[Token]:
             )
             tokens.append(token)
         return tokens
+
+    except Exception as err:
+        logging.error(err)
 
     finally:
         driver.quit()

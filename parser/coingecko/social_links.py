@@ -16,6 +16,7 @@ Note:
     - The ChromeDriver path should be added to the system environment variables. 
     - The function uses Chrome in a headless mode for scraping data.  
 """
+import logging
 from contextlib import suppress
 from selenium.common import TimeoutException, NoSuchElementException
 from selenium.webdriver.common.by import By
@@ -82,6 +83,9 @@ def get_social_links(address: str) -> dict:
             data[key] = value
 
         return data
+
+    except Exception as err:
+        logging.error(err)
 
     finally:
         driver.quit()

@@ -1,3 +1,5 @@
+import logging
+
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -41,6 +43,9 @@ def get_screenshot_link(token_address: str) -> None | str:
             EC.presence_of_element_located((By.XPATH, '//*[@id="screenshot-link"]/a'))
         )
         return screenshot_link.get_attribute('href')
+
+    except Exception as err:
+        logging.error(err)
 
     finally:
         driver.quit()
