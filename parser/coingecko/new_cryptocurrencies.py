@@ -20,7 +20,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from parser import BASE_DIR
 from parser.driver import get_driver
 
 
@@ -45,57 +44,6 @@ class Token:
     twenty_four_hour_volume: str
     FDV: str
     last_added: str
-
-
-class LastToken:
-    def __init__(self, filename: str = f"{BASE_DIR}/data/last_token"):
-        self.filename = filename
-
-    def save(self, text: str) -> None:
-        with open(self.filename, "w") as f:
-            f.write(text)
-
-    def update(self, new_text: str) -> None:
-        with open(self.filename, "w") as f:
-            f.write(new_text)
-
-    def load(self) -> None | str:
-        try:
-            with open(self.filename, "r") as f:
-                text = f.read()
-        except FileNotFoundError:
-            self.save(str())
-            return None
-
-        return text
-
-
-def get_new_tokens() -> list[Token]:
-    """
-    Retrieves a list of new tokens (cryptocurrencies) since the last retrieved token.
-
-    Returns:
-        list: A list of new tokens.
-    """
-    last_token = LastToken().load()
-    new_tokens: list[Token] = []
-
-    try:
-        tokens = get_new_cryptocurrencies()
-
-        if last_token is None:
-            new_tokens = tokens
-        else:
-            for token in tokens:
-                if token.chains[0].contract_address == last_token:
-                    break
-                new_tokens.append(token)
-        LastToken().update(tokens[0].chains[0].contract_address)
-
-    except Exception as err:
-        logging.error(err)
-
-    return new_tokens
 
 
 def get_new_cryptocurrencies() -> list[Token]:

@@ -56,11 +56,14 @@ def get_social_links(address: str) -> dict:
             agree_button = disclaimer_menu.find_element(By.XPATH, '//button[contains(text(), "Соглашаюсь")]')
             driver.execute_script("arguments[0].click();", agree_button)
 
-        website_element = driver.find_element(
-            By.XPATH,
-            '//span[contains(text(), "Веб-сайт")]/following-sibling::div/a'
-        )
-        data['Web-site'] = website_element.get_attribute('href')
+        try:
+            website_element = driver.find_element(
+                By.XPATH,
+                '//span[contains(text(), "Веб-сайт")]/following-sibling::div/a'
+            )
+            data['Web-site'] = website_element.get_attribute('href')
+        except NoSuchElementException:
+            pass
 
         social_elements = driver.find_elements(
             By.XPATH,

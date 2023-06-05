@@ -27,11 +27,11 @@ async def main():
     logging.info("Bot initialized!")
 
     while True:
-        # now = datetime.datetime.now(tz=pytz.timezone(TIME_ZONE)).time()
-        # if now >= datetime.time(23, 0) or now < datetime.time(8, 0):
-        #     logging.info("Skipping parsing...")
-        #     await asyncio.sleep(600)
-        #     continue
+        now = datetime.datetime.now(tz=pytz.timezone(TIME_ZONE)).time()
+        if now >= datetime.time(23, 0) or now < datetime.time(8, 0):
+            logging.info("Skipping parsing...")
+            await asyncio.sleep(600)
+            continue
         logging.info("Parsing...")
         asyncio.create_task(parse(db, bot, config))
         logging.info("Parsing added to the task...")

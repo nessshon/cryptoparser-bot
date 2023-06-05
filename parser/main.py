@@ -9,14 +9,14 @@ from sqlalchemy import exc
 from app.config import Config
 from app.db.sqlite.manage import Database
 from app.db.sqlite.models import Token
-from parser.coingecko import get_social_links, get_new_tokens
+from parser.coingecko import get_social_links, get_new_cryptocurrencies
 from parser.cryptach import get_screenshot_link
 
 
 async def parse(db: Database, bot: Bot, config: Config) -> None:
     screenshot_link: None | str = None
     social_links: None | dict = None
-    tokens = get_new_tokens()
+    tokens = get_new_cryptocurrencies()
 
     def check_chain(token_: Token) -> tuple[str, str] | tuple[None, None]:
         for chain_ in token_.chains:
