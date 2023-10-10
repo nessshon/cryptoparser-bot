@@ -6,7 +6,7 @@ from aiogram.types import Message
 from app.bot.handlers.windows.admin import AdminWindow
 from app.bot.misc.messages import delete_message
 from app.bot.misc.throttling import rate_limit, ThrottlingContext
-from app.db.sqlite.manage import Database
+from app.db.mysql.manage import Database
 
 
 @dataclass

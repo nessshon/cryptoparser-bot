@@ -5,7 +5,6 @@ from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from app.bot.misc.startposts import start_posts
-from app.config import TIME_ZONE
 
 BASE_DIR = Path(__file__).resolve().parent
 DB_PATH = f"{BASE_DIR}/scheduler.sqlite3"
@@ -21,7 +20,7 @@ class Scheduler:
         }
         self.async_scheduler = AsyncIOScheduler(
             jobstores=stores,
-            timezone=TIME_ZONE,
+            timezone="Europe/Moscow",
         )
 
     def add_postpone_post(self, time: str, token_id: int, channels_ids: list) -> None:

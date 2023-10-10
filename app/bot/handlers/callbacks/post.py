@@ -8,7 +8,7 @@ from app.bot.handlers.windows.post import PostWindow
 from app.bot.keyboards import CallbackData
 from app.bot.misc.throttling import rate_limit, ThrottlingContext
 from app.db.scheduler.manage import Scheduler
-from app.db.sqlite.manage import Database
+from app.db.mysql.manage import Database
 
 
 @dataclass

@@ -4,11 +4,10 @@ import random
 import datetime
 
 import pytz
-from aiogram import Bot
 
-from app.config import load_config, TIME_ZONE
-from app.db.sqlite.manage import Database
-from parser.main import parse
+from app.config import load_config
+from app.db.mysql.manage import Database
+from app.parser.main import parse
 
 
 async def main():
@@ -19,21 +18,18 @@ async def main():
     logging.info("Starting...")
     config = load_config()
 
-    db: Database = Database()
-    await db.run_sync()
+    db: Database = Database(config.database)
+    await db.init()
     logging.info("Database initialized!")
 
-    bot = Bot(token=config.BOT_TOKEN, parse_mode="HTML")
-    logging.info("Bot initialized!")
-
     while True:
-        now = datetime.datetime.now(tz=pytz.timezone(TIME_ZONE)).time()
+        now = datetime.datetime.now(tz=pytz.timezone("Europe/Moscow")).time()
         if now >= datetime.time(23, 0) or now < datetime.time(8, 0):
             logging.info("Skipping parsing...")
             await asyncio.sleep(600)
             continue
         logging.info("Parsing...")
-        asyncio.create_task(parse(db, bot, config))
+        asyncio.create_task(parse(db, config))
         logging.info("Parsing added to the task...")
         await asyncio.sleep(random.randint(2400, 3600))
 

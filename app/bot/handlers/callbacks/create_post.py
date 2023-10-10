@@ -10,7 +10,7 @@ from app.bot.handlers.windows.main import MainWindow
 from app.bot.keyboards import CallbackData
 from app.bot.misc.startposts import send_posts
 from app.bot.misc.throttling import ThrottlingContext
-from app.db.sqlite.manage import Database
+from app.db.mysql.manage import Database
 
 
 @dataclass

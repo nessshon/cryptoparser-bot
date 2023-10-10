@@ -2,7 +2,7 @@ from aiogram.types import Message, CallbackQuery, User
 from aiogram.dispatcher.filters import BoundFilter
 
 from app.config import Config
-from app.db.sqlite.manage import Database
+from app.db.mysql.manage import Database
 
 
 class IsAdmin(BoundFilter):
@@ -12,7 +12,7 @@ class IsAdmin(BoundFilter):
         db: Database = update.bot.get("db")
         user: User = User.get_current()
 
-        if user.id in [config.ADMIN_ID, config.DEV_ID]:
+        if user.id in [config.bot.ADMIN_ID, config.bot.DEV_ID]:
             return True
 
         db_user = await db.user.get(user.id)

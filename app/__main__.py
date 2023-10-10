@@ -16,8 +16,10 @@ def init():
 
     config = load_config()
 
-    bot = Bot(token=config.BOT_TOKEN, parse_mode="HTML")
-    storage = RedisStorage2(host=config.REDIS_HOST)
+    bot = Bot(token=config.bot.TOKEN, parse_mode="HTML")
+    storage = RedisStorage2(host=config.redis.HOST,
+                            port=config.redis.PORT,
+                            db=config.redis.DB)
     dp = Dispatcher(bot=bot, storage=storage)
     bot["config"] = config
 

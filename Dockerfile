@@ -14,6 +14,7 @@ RUN apt-get update && \
     apt-get update && \
     apt-get install -y google-chrome-stable && \
     pip install --no-cache-dir --upgrade pip &&  \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt &&  \
+    apt-get install -y chromium-driver
 
-COPY . .
+COPY cryptoparser-bot .

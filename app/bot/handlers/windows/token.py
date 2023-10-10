@@ -9,8 +9,7 @@ from app.bot import keyboards
 from app.bot.misc.messages import delete_previous_message
 from app.bot.misc.createtexts import create_base_info_token_text, create_info_token_text
 from app.bot.states import TokenMenuState
-from app.config import TIME_ZONE
-from app.db.sqlite.manage import Database
+from app.db.mysql.manage import Database
 
 
 @dataclass
@@ -139,7 +138,7 @@ class TokenWindow:
             text = create_info_token_text(token) + f"\n\n{text}"
         else:
             text = create_info_token_text(token)
-            current_date = datetime.now(tz=pytz.timezone(TIME_ZONE)).strftime("%d.%m.%Y %H:%M")
+            current_date = datetime.now(tz=pytz.timezone("Europe/Moscow")).strftime("%d.%m.%Y %H:%M")
             text += (
                 "\n\n<b>Отправьте время в формате</b> "
                 "<code>ДД.ММ.ГГГГ ЧЧ:ММ</code>:\n\n"

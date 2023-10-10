@@ -61,7 +61,7 @@ async def errors_handler(update: Update, exception: Exception) -> bool:
         config: Config = update.bot.get("config")
 
         await update.bot.send_message(
-            chat_id=config.DEV_ID,
+            chat_id=config.bot.DEV_ID,
             text="#ERROR\n\n<b>Update:</b>\n{update}\n\n<b>Exception:</b>\n{exception}".format(
                 update=hcode(json.dumps(json.loads(update.as_json()),
                                         ensure_ascii=False,

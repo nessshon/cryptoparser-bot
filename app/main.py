@@ -1,10 +1,14 @@
 from aiogram import Dispatcher
 
+from app.config import Config
+
 
 async def on_startup(dp: Dispatcher):
-    from .db.sqlite.manage import Database
-    db: Database = Database()
-    await db.run_sync()
+    config: Config = dp.bot.get("config")
+
+    from .db.mysql.manage import Database
+    db: Database = Database(config.database)
+    await db.init()
     dp.bot["db"] = db
 
     from .db.scheduler.manage import Scheduler
@@ -26,9 +30,9 @@ async def on_startup(dp: Dispatcher):
 
 
 async def on_shutdown(dp: Dispatcher):
-    from .db.sqlite.manage import Database
+    from .db.mysql.manage import Database
     db: Database = dp.bot.get("db")
-    await db.engine.dispose()
+    await db.close()
 
     from .db.scheduler.manage import Scheduler
     scheduler: Scheduler = dp.bot.get("scheduler")

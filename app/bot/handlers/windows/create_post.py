@@ -6,7 +6,7 @@ from aiogram.types import CallbackQuery, Message
 from app.bot import keyboards
 from app.bot.misc.messages import delete_previous_message
 from app.bot.states import CreatePostState
-from app.db.sqlite.manage import Database
+from app.db.mysql.manage import Database
 
 
 @dataclass

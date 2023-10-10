@@ -10,7 +10,7 @@ from app.bot.misc.createtexts import create_info_token_text
 from app.bot.misc.messages import delete_previous_message
 from app.bot.states import PostMenuState
 from app.db.scheduler.manage import Scheduler
-from app.db.sqlite.manage import Database
+from app.db.mysql.manage import Database
 
 
 @dataclass

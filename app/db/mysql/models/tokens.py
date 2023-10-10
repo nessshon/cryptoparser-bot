@@ -1,17 +1,13 @@
 from __future__ import annotations
 
-from datetime import datetime
-
-import pytz
 from sqlalchemy import *
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
-from app.config import TIME_ZONE
-from .base import Base
+from ._base import Base
 
 
-class Channel(Base):
-    __tablename__ = "channels"
+class Token(Base):
+    __tablename__ = "tokens"
 
     pk = Column(
         Integer,
@@ -23,41 +19,63 @@ class Channel(Base):
         unique=True,
         nullable=False,
     )
-    title = Column(
+    name = Column(
         VARCHAR(length=256),
         nullable=False,
     )
-    language_code = Column(
-        VARCHAR(5),
+    chain = Column(
+        VARCHAR(length=256),
+        nullable=False,
+    )
+    links = Column(
+        PickleType,
+        nullable=True,
+    )
+    comment = Column(
+        VARCHAR(length=1024),
+        nullable=True,
+    )
+    screenshot_link = Column(
+        VARCHAR(length=1024),
+        nullable=False,
+    )
+    is_viewed = Column(
+        Boolean,
+        default=False,
         nullable=False,
     )
     created_at = Column(
         DateTime,
-        default=datetime.now(tz=pytz.timezone(TIME_ZONE))
+        default=func.now(),
     )
 
     def __init__(self, sessionmaker=None, *args, **kwargs) -> None:
         self.async_sessionmaker: async_sessionmaker = sessionmaker
         super().__init__(*args, **kwargs)
 
-    async def add(self, **kwargs) -> None:
+    async def add(self, **kwargs) -> Token:
         async with self.async_sessionmaker() as session:
-            session.add(Channel(**kwargs))
-            await session.commit()
+            model = Token(**kwargs)
+            session.add(model)
 
-    async def get(self, id_: str | int) -> Channel:
+            await session.commit()
+            await session.refresh(model)
+
+            return model
+
+    async def get(self, id_: str | int) -> Token:
         async with self.async_sessionmaker() as session:
             query = await session.execute(
-                select(Channel).
-                where(Channel.id == id_)
+                select(Token).
+                where(Token.id == id_)
             )
             return query.scalar()
 
     async def update(self, id_: str | int, **kwargs) -> None:
         async with self.async_sessionmaker() as session:
             await session.execute(
-                update(Channel).
-                where(Channel.id == id_).
+                update(Token).
+                where(Token.id == id_).
                 values(**kwargs)
             )
             await session.commit()
@@ -65,22 +83,24 @@ class Channel(Base):
     async def delete(self, id_: str | int) -> None:
         async with self.async_sessionmaker() as session:
             await session.execute(
-                delete(Channel).
-                where(Channel.id == id_)
+                delete(Token).
+                where(Token.id == id_)
             )
             await session.commit()
 
-    async def get_all(self) -> list[Channel]:
+    async def get_all(self) -> list[Token]:
         async with self.async_sessionmaker() as session:
             query = await session.execute(
-                select(Channel)
+                select(Token)
             )
             return [i[0] for i in query.all()]
 
-    async def is_exists(self, id_: str | int) -> bool:
+    async def get_not_viewed_all(self) -> list[Token]:
         async with self.async_sessionmaker() as session:
             query = await session.execute(
-                select(Channel).
-                where(Channel.id == id_)
+                select(Token).
+                where(Token.is_viewed.is_(False)).
+                order_by(Token.created_at.desc()).
+                limit(50)
             )
-            return query.scalar() is not None
+            return [i[0] for i in query.all()]

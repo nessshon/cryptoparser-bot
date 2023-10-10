@@ -1,10 +1,11 @@
 aiogoogletrans==3.3.3
 aiogram==2.25.1
-aiosqlite==0.19.0
+aiomysql==0.2.0
 APScheduler==3.10.1
+cryptography==41.0.4
 environs==9.5.0
 pytz==2023.3
 redis==4.5.5
-selenium==4.9.1
+selenium==4.14.0
 SQLAlchemy==2.0.15
-webdriver-manager==3.8.6
+webdriver-manager==4.0.1

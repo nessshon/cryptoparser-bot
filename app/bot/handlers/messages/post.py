@@ -9,7 +9,6 @@ from aiogram.utils.markdown import hcode
 from app.bot.handlers.windows.post import PostWindow
 from app.bot.misc.messages import delete_message
 from app.bot.misc.throttling import rate_limit, ThrottlingContext
-from app.config import TIME_ZONE
 
 
 @dataclass
@@ -32,7 +31,7 @@ class PostMessage:
                         await state.update_data(new_time=message.text)
                         await PostWindow.edit_time_confirm(state, message=message)
                     else:
-                        current_date = datetime.now(tz=pytz.timezone(TIME_ZONE)).strftime("%d.%m.%Y %H:%M")
+                        current_date = datetime.now(tz=pytz.timezone("Europe/Moscow")).strftime("%d.%m.%Y %H:%M")
                         text = (
                             "<b>Неверный формат даты и времени.</b>\n"
                             "<b>Допустимый формат:</b> <code>ДД.ММ.ГГГГ ЧЧ:ММ</code>\n\n"

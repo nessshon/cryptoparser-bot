@@ -9,8 +9,7 @@ from aiogram.utils.markdown import hcode
 from app.bot.handlers.windows.token import TokenWindow
 from app.bot.misc.messages import delete_message
 from app.bot.misc.throttling import rate_limit, ThrottlingContext
-from app.config import TIME_ZONE
-from app.db.sqlite.manage import Database
+from app.db.mysql.manage import Database
 
 
 @dataclass
@@ -56,7 +55,7 @@ class TokenMessage:
                         await state.update_data(time=message.text)
                         await TokenWindow.create_postpone_confirm(state, message=message)
                     else:
-                        current_date = datetime.now(tz=pytz.timezone(TIME_ZONE)).strftime("%d.%m.%Y %H:%M")
+                        current_date = datetime.now(tz=pytz.timezone("Europe/Moscow")).strftime("%d.%m.%Y %H:%M")
 
                         text = (
                             "<b>Неверный формат даты и времени.</b>\n"

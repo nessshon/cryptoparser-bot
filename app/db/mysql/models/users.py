@@ -1,13 +1,9 @@
 from __future__ import annotations
 
-from datetime import datetime
-
-import pytz
 from sqlalchemy import *
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
-from app.config import TIME_ZONE
-from .base import Base
+from ._base import Base
 
 
 class User(Base):
@@ -34,7 +30,7 @@ class User(Base):
     )
     created_at = Column(
         DateTime,
-        default=datetime.now(tz=pytz.timezone(TIME_ZONE))
+        default=func.now(),
     )
 
     def __init__(self, sessionmaker=None, *args, **kwargs) -> None:

@@ -7,7 +7,7 @@ from aiogram.utils.markdown import hlink
 from app.bot import keyboards
 from app.bot.misc.messages import delete_previous_message
 from app.bot.states import AdminMenuState
-from app.db.sqlite.manage import Database
+from app.db.mysql.manage import Database
 
 
 @dataclass

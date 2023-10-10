@@ -6,7 +6,7 @@ from aiogram.utils.markdown import hitalic
 
 from app.bot import keyboards
 from app.bot.misc.createtexts import create_base_info_token_text
-from app.db.sqlite.manage import Database
+from app.db.mysql.manage import Database
 from app.translator import translate
 
 

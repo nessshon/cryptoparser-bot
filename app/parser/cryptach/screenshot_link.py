@@ -1,9 +1,10 @@
 import logging
+import traceback
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from parser.driver import get_driver
+from app.parser.driver import get_driver
 
 
 def get_screenshot_link(token_address: str) -> None | str:
@@ -45,6 +46,7 @@ def get_screenshot_link(token_address: str) -> None | str:
         return screenshot_link.get_attribute('href')
 
     except Exception as err:
+        logging.error(traceback.format_exc())
         logging.error(err)
 
     finally:

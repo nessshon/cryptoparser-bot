@@ -7,7 +7,7 @@ from aiogram.utils.exceptions import ChatNotFound
 from app.bot.handlers.windows.channel import ChannelWindow
 from app.bot.misc.messages import delete_message
 from app.bot.misc.throttling import rate_limit, ThrottlingContext
-from app.db.sqlite.manage import Database
+from app.db.mysql.manage import Database
 
 
 @dataclass

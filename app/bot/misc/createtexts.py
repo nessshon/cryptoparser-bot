@@ -1,6 +1,6 @@
 from aiogram.utils.markdown import hide_link
 
-from app.db.sqlite.models import Token
+from app.db.mysql.models import Token
 
 
 def create_base_info_token_text(token: Token) -> str:

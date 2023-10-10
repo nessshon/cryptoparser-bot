@@ -7,7 +7,7 @@ from app.bot.handlers.windows.channel import ChannelWindow
 from app.bot.handlers.windows.main import MainWindow
 from app.bot.keyboards import CallbackData
 from app.bot.misc.throttling import rate_limit, ThrottlingContext
-from app.db.sqlite.manage import Database
+from app.db.mysql.manage import Database
 from app.translator import SUPPORT_LANGUAGES
 
 

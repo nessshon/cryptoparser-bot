@@ -23,7 +23,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from parser.driver import get_driver
+from app.parser.driver import get_driver
 
 
 def get_social_links(address: str) -> dict:

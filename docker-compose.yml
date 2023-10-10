@@ -4,7 +4,7 @@ services:
 
   telegram-bot:
     build:
-      context: .
+      context: cryptoparser-bot
     container_name: cryptoparser-bot
     command: sh -c "cd /usr/src/telegram-bot && python -m app"
     restart: always
@@ -12,18 +12,36 @@ services:
       - .:/usr/src/telegram-bot
     depends_on:
       - redis
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "10"
+    networks:
+      - network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   parser:
     build:
-      context: .
+      context: cryptoparser-bot
     container_name: cryptoparser-parser
-    command: sh -c "cd /usr/src/telegram-bot && python -m parser"
+    command: sh -c "cd /usr/src/telegram-bot && python -m app.parser"
     restart: always
     volumes:
       - .:/usr/src/telegram-bot
     depends_on:
       - redis
       - telegram-bot
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "10"
+    networks:
+      - network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   redis:
     image: redis:alpine
@@ -31,3 +49,12 @@ services:
     restart: always
     volumes:
       - ./redis/data/:/data
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "10"
+    networks:
+      - network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

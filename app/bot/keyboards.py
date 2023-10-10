@@ -1,7 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from app.config import Config
-from app.db.sqlite.models import Channel, User, Token
+from app.db.mysql.models import Channel, User, Token
 from app.translator import SUPPORT_LANGUAGES
 
 
@@ -44,7 +44,7 @@ def generate_buttons(buttons: str) -> InlineKeyboardMarkup:
 
 
 def post_buttons(token_id: str, chain: str) -> InlineKeyboardMarkup:
-    from parser.coingecko.new_cryptocurrencies import Token
+    from app.parser.coingecko.new_cryptocurrencies import Token
 
     if chain == Token.ChainType.Ethereum:
         explorer_text = "Etherscan"
@@ -256,7 +256,7 @@ def main_menu(config: Config, user_id: int | str) -> InlineKeyboardMarkup:
         InlineKeyboardButton(text="🪙 Токены", callback_data=CallbackData.TOKENS),
         InlineKeyboardButton(text="🕝 Отложено", callback_data=CallbackData.PENDING),
     )
-    if int(user_id) in [config.ADMIN_ID, config.DEV_ID]:
+    if int(user_id) in [config.bot.ADMIN_ID, config.bot.DEV_ID]:
         markup.add(
             InlineKeyboardButton(text="📢 Каналы", callback_data=CallbackData.CHANNELS),
             InlineKeyboardButton(text="👤 Админы", callback_data=CallbackData.ADMINS),

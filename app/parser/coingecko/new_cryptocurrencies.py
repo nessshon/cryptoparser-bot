@@ -12,15 +12,17 @@ Functions:
                             using Selenium webdriver. It returns a list of Token objects.
 """
 import logging
+import time
+import traceback
 from dataclasses import dataclass
 
-from selenium.common import NoSuchElementException
+from selenium.common import NoSuchElementException, TimeoutException
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-from parser.driver import get_driver
+from app.parser.driver import get_driver
 
 
 @dataclass
@@ -60,9 +62,15 @@ def get_new_cryptocurrencies() -> list[Token]:
         chains: list[Chain] = []
 
         driver.get('https://www.coingecko.com/ru/new-cryptocurrencies')
-        for element in WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located(
-                (By.CSS_SELECTOR, "tbody[data-target='currencies.contentBox'] tr"))):
 
+        try:
+            elements = WebDriverWait(driver, 10).until(EC.visibility_of_any_elements_located(
+                (By.CSS_SELECTOR, "tbody[data-target='currencies.contentBox'] tr")))
+        except TimeoutException:
+            elements = driver.find_elements(
+                By.CSS_SELECTOR, "tbody[data-target='currencies.contentBox'] tr")
+
+        for element in elements[5:10]:
             try:
                 dropdown_button = element.find_element(By.ID, 'dropdownMenuButton')
                 dropdown_button.click()
@@ -72,7 +80,7 @@ def get_new_cryptocurrencies() -> list[Token]:
                           name, contract_address in zip(names, contract_addresses)]
                 dropdown_button.click()
             except NoSuchElementException:
-                pass
+                ...
 
             token = Token(
                 chains=chains,
@@ -105,6 +113,7 @@ def get_new_cryptocurrencies() -> list[Token]:
         return tokens
 
     except Exception as err:
+        logging.error(traceback.format_exc())
         logging.error(err)
 
     finally:

@@ -7,7 +7,7 @@ from app.bot.handlers.windows.admin import AdminWindow
 from app.bot.handlers.windows.main import MainWindow
 from app.bot.keyboards import CallbackData
 from app.bot.misc.throttling import ThrottlingContext, rate_limit
-from app.db.sqlite.manage import Database
+from app.db.mysql.manage import Database
 
 
 @dataclass
