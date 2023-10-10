@@ -9,7 +9,7 @@ from webdriver_manager.core.utils import read_version_from_cmd
 
 def get_driver() -> WebDriver:
     chrome_options = Options()
-    chrome_options.add_argument("--headless")
+    # chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
 

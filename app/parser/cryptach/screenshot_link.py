@@ -24,23 +24,23 @@ def get_screenshot_link(token_address: str) -> None | str:
     try:
         driver.get(f'https://cryptach.org/ru/scan/{token_address}')
 
-        WebDriverWait(driver, 10).until(
+        WebDriverWait(driver, 20).until(
             EC.invisibility_of_element_located((By.ID, 'global-loader'))
         )
 
-        result_error = WebDriverWait(driver, 10).until(
+        result_error = WebDriverWait(driver, 20).until(
             EC.presence_of_element_located((By.ID, 'result-error'))
         )
         text_errors = ['Нет информации об этом адресе.', 'Неправильный адрес']
         if result_error.text in text_errors:
             return None
 
-        screenshot_link_button = WebDriverWait(driver, 10).until(
+        screenshot_link_button = WebDriverWait(driver, 20).until(
             EC.element_to_be_clickable((By.ID, 'show-screenshot-link'))
         )
         driver.execute_script("arguments[0].click();", screenshot_link_button)
 
-        screenshot_link = WebDriverWait(driver, 10).until(
+        screenshot_link = WebDriverWait(driver, 20).until(
             EC.presence_of_element_located((By.XPATH, '//*[@id="screenshot-link"]/a'))
         )
         return screenshot_link.get_attribute('href')

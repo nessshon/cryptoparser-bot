@@ -61,16 +61,19 @@ def get_new_cryptocurrencies() -> list[Token]:
         tokens: list[Token] = []
         chains: list[Chain] = []
 
-        driver.get('https://www.coingecko.com/ru/new-cryptocurrencies')
-
+        driver.set_page_load_timeout(10)
         try:
-            elements = WebDriverWait(driver, 10).until(EC.visibility_of_any_elements_located(
+            driver.get('https://www.coingecko.com/ru/new-cryptocurrencies')
+        except TimeoutException:
+            ...
+        try:
+            elements = WebDriverWait(driver, 2).until(EC.element_located_to_be_selected(
                 (By.CSS_SELECTOR, "tbody[data-target='currencies.contentBox'] tr")))
         except TimeoutException:
             elements = driver.find_elements(
                 By.CSS_SELECTOR, "tbody[data-target='currencies.contentBox'] tr")
 
-        for element in elements[5:10]:
+        for element in elements[5:15]:
             try:
                 dropdown_button = element.find_element(By.ID, 'dropdownMenuButton')
                 dropdown_button.click()
