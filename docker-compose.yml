@@ -4,7 +4,7 @@ services:
 
   telegram-bot:
     build:
-      context: cryptoparser-bot
+      context: .
     container_name: cryptoparser-bot
     command: sh -c "cd /usr/src/telegram-bot && python -m app"
     restart: always
@@ -24,7 +24,7 @@ services:
 
   parser:
     build:
-      context: cryptoparser-bot
+      context: .
     container_name: cryptoparser-parser
     command: sh -c "cd /usr/src/telegram-bot && python -m app.parser"
     restart: always
