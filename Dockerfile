@@ -17,4 +17,4 @@ RUN apt-get update && \
     pip install --no-cache-dir -r requirements.txt &&  \
     apt-get install -y chromium-driver
 
-COPY cryptoparser-bot .
+COPY . .
