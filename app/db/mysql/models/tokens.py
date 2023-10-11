@@ -10,12 +10,12 @@ class Token(Base):
     __tablename__ = "tokens"
 
     pk = Column(
-        Integer,
+        BigInteger,
         primary_key=True,
         autoincrement=True,
     )
     id = Column(
-        BigInteger,
+        VARCHAR(length=256),
         unique=True,
         nullable=False,
     )
