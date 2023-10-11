@@ -12,6 +12,7 @@ Functions:
                             using Selenium webdriver. It returns a list of Token objects.
 """
 import logging
+import time
 import traceback
 from dataclasses import dataclass
 
@@ -61,10 +62,10 @@ def get_new_cryptocurrencies() -> list[Token]:
         chains: list[Chain] = []
 
         driver.get('https://coingecko.com/en/new-cryptocurrencies/')
-        print(driver)
+        time.sleep(10)
 
         elements = driver.find_elements(
-            (By.CSS_SELECTOR, "tbody[data-target='currencies.contentBox'] tr"))
+            By.CSS_SELECTOR, "tbody[data-target='currencies.contentBox'] tr")
 
         for element in elements[:20]:
             try:
