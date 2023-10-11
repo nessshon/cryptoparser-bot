@@ -12,11 +12,10 @@ Functions:
                             using Selenium webdriver. It returns a list of Token objects.
 """
 import logging
-import time
 import traceback
 from dataclasses import dataclass
 
-from selenium.common import NoSuchElementException, TimeoutException
+from selenium.common import NoSuchElementException
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -61,19 +60,13 @@ def get_new_cryptocurrencies() -> list[Token]:
         tokens: list[Token] = []
         chains: list[Chain] = []
 
-        driver.set_page_load_timeout(10)
-        try:
-            driver.get('https://www.coingecko.com/ru/new-cryptocurrencies')
-        except TimeoutException:
-            ...
-        try:
-            elements = WebDriverWait(driver, 2).until(EC.element_located_to_be_selected(
-                (By.CSS_SELECTOR, "tbody[data-target='currencies.contentBox'] tr")))
-        except TimeoutException:
-            elements = driver.find_elements(
-                By.CSS_SELECTOR, "tbody[data-target='currencies.contentBox'] tr")
+        driver.get('https://coingecko.com/en/new-cryptocurrencies/')
+        print(driver)
 
-        for element in elements[5:15]:
+        elements = driver.find_elements(
+            (By.CSS_SELECTOR, "tbody[data-target='currencies.contentBox'] tr"))
+
+        for element in elements[:20]:
             try:
                 dropdown_button = element.find_element(By.ID, 'dropdownMenuButton')
                 dropdown_button.click()

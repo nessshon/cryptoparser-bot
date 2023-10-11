@@ -35,8 +35,8 @@ class Token(Base):
         VARCHAR(length=1024),
         nullable=True,
     )
-    screenshot_link = Column(
-        VARCHAR(length=1024),
+    screenshot = Column(
+        BLOB,
         nullable=False,
     )
     is_viewed = Column(

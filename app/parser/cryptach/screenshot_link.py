@@ -7,22 +7,22 @@ from selenium.webdriver.support.ui import WebDriverWait
 from app.parser.driver import get_driver
 
 
-def get_screenshot_link(token_address: str) -> None | str:
+def get_screenshot_link(token_address: str) -> bytes | None:
     """
-    This function parses the screenshot link for a given token
-    address from the website https://cryptach.org/ru/scan/
+    This function takes a screenshot of a given token address
+    from the website https://cryptach.org/ru/scan/
 
     Args:
         token_address (str): The address of the token
 
     Returns:
-        str: The link to the screenshot of the token, if it exists.
-        False, if the link doesn't exist.
+        bytes: The screenshot image data in bytes, if successful.
+        None: If an error occurred or the screenshot couldn't be taken.
     """
     driver = get_driver()
 
     try:
-        driver.get(f'https://cryptach.org/ru/scan/{token_address}')
+        driver.get(f'https://cryptach.org/en/scan/{token_address}')
 
         WebDriverWait(driver, 20).until(
             EC.invisibility_of_element_located((By.ID, 'global-loader'))
@@ -31,19 +31,18 @@ def get_screenshot_link(token_address: str) -> None | str:
         result_error = WebDriverWait(driver, 20).until(
             EC.presence_of_element_located((By.ID, 'result-error'))
         )
-        text_errors = ['Нет информации об этом адресе.', 'Неправильный адрес']
+        text_errors = ['error', 'There is no information about this address.', 'Invalid address']
         if result_error.text in text_errors:
             return None
 
-        screenshot_link_button = WebDriverWait(driver, 20).until(
-            EC.element_to_be_clickable((By.ID, 'show-screenshot-link'))
-        )
-        driver.execute_script("arguments[0].click();", screenshot_link_button)
+        driver.execute_script("document.body.style.zoom='50%'")
 
-        screenshot_link = WebDriverWait(driver, 20).until(
-            EC.presence_of_element_located((By.XPATH, '//*[@id="screenshot-link"]/a'))
+        element = WebDriverWait(driver, 20).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, '.row.d-flex.justify-content-center'))
         )
-        return screenshot_link.get_attribute('href')
+        screenshot = element.screenshot_as_png
+
+        return screenshot
 
     except Exception as err:
         logging.error(traceback.format_exc())

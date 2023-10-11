@@ -89,7 +89,11 @@ async def start_posts(db: Database, config: Config, token: Token) -> None:
 
         bot = Bot(token=config.bot.TOKEN, parse_mode="HTML")
         try:
-            await bot.send_message(channel_id, text, reply_markup=markup)
+            await bot.send_photo(
+                channel_id,
+                photo=token.screenshot,
+                caption=text,
+                reply_markup=markup)
             await bot.session.close()
         except (Exception,):
             ...
