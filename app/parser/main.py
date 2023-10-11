@@ -67,8 +67,8 @@ async def parse(db: Database, config: Config) -> None:
 async def start_posts(db: Database, config: Config, token: Token) -> None:
     channels = await db.channel.get_all()
 
-    for channel_id in channels:
-        channel = await db.channel.get(id_=channel_id)
+    for channel in channels:
+        channel = await db.channel.get(id_=channel)
 
         markup = keyboards.post_buttons(token.id, token.chain)
         text = create_base_info_token_text(token)
@@ -89,7 +89,7 @@ async def start_posts(db: Database, config: Config, token: Token) -> None:
         bot = Bot(token=config.bot.TOKEN, parse_mode="HTML")
         try:
             await bot.send_photo(
-                channel_id,
+                chat_id=channel.id,
                 photo=token.screenshot,
                 caption=text,
                 reply_markup=markup)
