@@ -21,7 +21,6 @@ async def parse(db: Database, config: Config) -> None:
     screenshot_link: None | str = None
     social_links: None | dict = None
     tokens = get_new_cryptocurrencies()
-    print(tokens)
 
     def check_chain(token_: Token) -> tuple[str, str] | tuple[None, None]:
         for chain_ in token_.chains:
@@ -53,7 +52,7 @@ async def parse(db: Database, config: Config) -> None:
                     name=token.name,
                     chain=chain_name,
                     links=social_links,
-                    screenshot_link=screenshot_link,
+                    screenshot=screenshot_link,
                 )
             except exc.IntegrityError:
                 db_token = None
