@@ -23,9 +23,9 @@ async def on_startup(db: Database, config: Config):
 
     while True:
         now = datetime.datetime.now(tz=pytz.timezone("Europe/Moscow")).time()
-        if now >= datetime.time(23, 0) or now < datetime.time(8, 0):
-            logging.info("Skipping parsing...")
-            await asyncio.sleep(600)
+        # Set time range for parsing (9:00 AM - 10:00 AM)
+        if now < datetime.time(9, 0) or now >= datetime.time(23, 0):
+            await asyncio.sleep(1800)  # Sleep for 30 minutes
             continue
         logging.info("Parsing...")
         asyncio.create_task(parse(db, config))
